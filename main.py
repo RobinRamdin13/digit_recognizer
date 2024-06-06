@@ -16,10 +16,10 @@ def init_params()-> Tuple[List[float], List[float], List[float], List[float]]:
     Returns:
         Tuple[List[float], List[float], List[float], List[float]]: weights and biases for neural network layers
     """
-    w1 = np.random.rand(10, 784) - 0.5 # weights of first layer 
-    b1 = np.random.rand(10, 1) - 0.5 # bias for first layer 
-    w2 = np.random.rand(10, 10) -0.5 # weights for second layer 
-    b2 = np.random.rand(10, 1) -0.5 # bias for second layer
+    w1 = np.random.rand(128, 784) - 0.5 # weights of first layer 
+    b1 = np.random.rand(128, 1) - 0.5 # bias for first layer 
+    w2 = np.random.rand(10, 128) - 0.5 # weights for second layer 
+    b2 = np.random.rand(10, 1) - 0.5 # bias for second layer
     return w1, b1, w2, b2
 
 def relu(z: List[float]) -> List[float]:    
