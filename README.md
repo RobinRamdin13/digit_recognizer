@@ -7,9 +7,9 @@ Random noise were added to the training dataset to explore the effects of advers
 | Model Trained with Noise Parameter | Model Accuracy on Eval Set|
 | ---------------------------------- | ------------------------- |
 | 0 (Base Model)                     | 91.857%                   |
-| 0.1                                | % Accurate                |
-| 0.2                                | % Accurate                |
-| 0.3                                | % Accurate                |
+| 0.1                                | 93.095%                   |
+| 0.2                                | 93.095%                   |
+| 0.3                                | 93.095%                   |
 
 ___
 ### Running the Code 
