@@ -10,6 +10,13 @@ from sklearn.model_selection import train_test_split
 np.random.seed(12345)
 random_state = 12345
 
+def add_noise(mu, sigma, x, y, noise_param):
+    gaussian_dist = np.random.normal(mu, sigma, size=x.shape)
+    x_noise = np.maximum(np.maximum(gaussian_dist,0)*noise_param + x, 1.0)
+    x = np.append(x, x_noise, axis=1)
+    y = np.append(y, y, axis=0)
+    return x, y
+
 def init_params()-> Tuple[List[float], List[float], List[float], List[float]]:
     """Function to initials weights and biases with random variables between -0.5 and 0.5
 
@@ -205,12 +212,14 @@ def main(train_path:str, test_path:str, output_path:str)-> None:
     # # split training into training and evaluation set 
     y = df_train.pop('label').to_frame()
     X = df_train
+    
     # use stratify to ensure balance label split  
     X_train, X_eval, y_train, y_eval = train_test_split(X, y, stratify=y, test_size=0.2, random_state=random_state)
     m, _ = np.array(X_train).shape
 
     # convert to arrays and reshape with transpose 
     X_train, X_eval, y_train, y_eval = np.array(X_train).T, np.array(X_eval).T, np.ravel(np.array(y_train)), np.ravel(np.array(y_eval))
+    X_train, y_train = add_noise(mu=0, sigma=0.1, x=X_train, y=y_train, noise_param=0.3)
     
     # normalize the X values by dividing by 255 
     X_train, X_eval = X_train/255, X_eval/255
@@ -221,7 +230,6 @@ def main(train_path:str, test_path:str, output_path:str)-> None:
     # perform inference on eval set
     _, _, _, a2 = forward_prop(w1, b1, w2, b2, X_eval)
     print(f"Evaluation Prediction Accuracy: {accuracy(prediction(a2), y_eval)}")
-
     return 
 
 if __name__ == '__main__':
