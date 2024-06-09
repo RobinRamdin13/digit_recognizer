@@ -1,6 +1,7 @@
 import os 
 import numpy as np 
-import pandas as pd 
+import pandas as pd
+import matplotlib.pyplot as plt 
 
 from tqdm import tqdm 
 from typing import List, Tuple
@@ -10,11 +11,46 @@ from sklearn.model_selection import train_test_split
 np.random.seed(12345)
 random_state = 12345
 
-def add_noise(mu, sigma, x, y, noise_param):
+def plot_sample(data:List[float], noise_amount:float)->None:
+    """Function to extract sample of mnist data and save plots
+
+    Args:
+        data (List[float]): mnist pixel data
+        noise_amount (float): noise magnitude
+    """    
+    if not os.path.exists('plots'): os.mkdir('plots')
+
+    fig,ax = plt.subplots(1,5)
+    for i, ax in enumerate(ax.flatten()):
+        image = np.reshape(data[i], (28,28))
+        ax.imshow(image, cmap='gray')
+    fig.savefig(f'plots/{noise_amount}_samples.jpeg')
+    return
+
+def add_noise(mu:int, sigma:float, x:List[float], y:List[float], noise_param:float)-> Tuple[List[float], List[float]]:
+    """Function to add gaussian noise to mnist data
+
+    Args:
+        mu (int): gaussian mean
+        sigma (float): gaussian standard variation
+        x (List[float]): mnist pixel data
+        y (List[float]): mnist label data
+        noise_param (float): noise magnitude
+
+    Returns:
+        Tuple[List[float], List[float]]: x and y variables with noise augmented data
+    """    
     gaussian_dist = np.random.normal(mu, sigma, size=x.shape)
     x_noise = np.maximum(np.maximum(gaussian_dist,0)*noise_param + x, 1.0)
+    
+    x_noise_temp = x_noise.T
+    x_temp = x.T
+
     x = np.append(x, x_noise, axis=1)
     y = np.append(y, y, axis=0)
+    
+    plot_sample(x_noise_temp, noise_amount=noise_param)
+    plot_sample(x_temp, noise_amount=0.0)
     return x, y
 
 def init_params()-> Tuple[List[float], List[float], List[float], List[float]]:
@@ -219,17 +255,17 @@ def main(train_path:str, test_path:str, output_path:str)-> None:
 
     # convert to arrays and reshape with transpose 
     X_train, X_eval, y_train, y_eval = np.array(X_train).T, np.array(X_eval).T, np.ravel(np.array(y_train)), np.ravel(np.array(y_eval))
-    X_train, y_train = add_noise(mu=0, sigma=0.1, x=X_train, y=y_train, noise_param=0.3)
+    X_train, y_train = add_noise(mu=0, sigma=0.1, x=X_train, y=y_train, noise_param=0.1)
     
     # normalize the X values by dividing by 255 
     X_train, X_eval = X_train/255, X_eval/255
 
-    # train model 
-    w1, b1, w2, b2 = gradient_descent(X_train, y_train, m, alpha=0.01, iter=10000)
+    # # train model 
+    # w1, b1, w2, b2 = gradient_descent(X_train, y_train, m, alpha=0.01, iter=10000)
 
-    # perform inference on eval set
-    _, _, _, a2 = forward_prop(w1, b1, w2, b2, X_eval)
-    print(f"Evaluation Prediction Accuracy: {accuracy(prediction(a2), y_eval)}")
+    # # perform inference on eval set
+    # _, _, _, a2 = forward_prop(w1, b1, w2, b2, X_eval)
+    # print(f"Evaluation Prediction Accuracy: {accuracy(prediction(a2), y_eval)}")
     return 
 
 if __name__ == '__main__':
