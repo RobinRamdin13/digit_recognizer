@@ -16,7 +16,15 @@ Random noise were added to the training dataset to explore the effects of advers
 
 The table shows that addition of noise to augment the data does help to boost the performance of the model however it saturated at the 0.1 noise parameter. Further exploration can be computed similar to how hyperparameters are optimized. 
 
-![test](https://github.com/RobinRamdin13/digit_recognizer/blob/main/plots/0.0_samples.jpeg)
+#### MNIST Sample with No Noise
+![no noise](https://github.com/RobinRamdin13/digit_recognizer/blob/main/plots/0.0_samples.jpeg)
+#### MNIS Sample with 0.1 Noise
+![0.1 noise](https://github.com/RobinRamdin13/digit_recognizer/blob/main/plots/0.1_samples.jpeg)
+#### MNIS Sample with 0.2 Noise
+![0.2 noise](https://github.com/RobinRamdin13/digit_recognizer/blob/main/plots/0.2_samples.jpeg)
+#### MNIS Sample with 0.3 Noise
+![0.3 noise](https://github.com/RobinRamdin13/digit_recognizer/blob/main/plots/0.3_samples.jpeg)
+
 ___
 ### Running the Code 
 #### Creating Virtual Environment
